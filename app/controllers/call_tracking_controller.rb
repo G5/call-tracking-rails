@@ -2,7 +2,7 @@ class CallTrackingController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def forward_call
-    console.log(params.to_string)
+    Rails.logger.debug params.to_string
     lead = Lead.create(lead_params)
     render text: twilio_response.text
   end
