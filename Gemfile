@@ -25,3 +25,14 @@ group :test do
   gem 'vcr'
   gem 'webmock'
 end
+
+group :development do
+  gem 'dotenv-rails'
+end
+
+group :production do
+  # Enables things like reasonably speedy logging and asset serving in Rails4
+  # on Heroku.  Source: https://devcenter.heroku.com/articles/rails4
+  gem 'rails_12factor'
+end
+
