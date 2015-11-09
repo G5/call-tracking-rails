@@ -9,6 +9,7 @@ class CallTrackingController < ApplicationController
 
   def call_end
     Rails.logger.debug params.to_s
+    render status: :ok, json: @controller.to_json
     # lead = Lead.create(lead_params)
     # render text: twilio_response.text
   end
