@@ -2,6 +2,7 @@ class CallTrackingController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def forward_call
+    console.log(params.to_string)
     lead = Lead.create(lead_params)
     render text: twilio_response.text
   end
@@ -12,7 +13,7 @@ class CallTrackingController < ApplicationController
     phone_number = lead_source.forwarding_number
 
     Twilio::TwiML::Response.new do |r|
-      #r.Play "http://demo.twilio.com/hellomonkey/monkey.mp3"
+      r.Play "http://demo.twilio.com/hellomonkey/monkey.mp3"
       r.Dial phone_number
     end
   end
