@@ -15,3 +15,8 @@
 /log/*
 !/log/.keep
 /tmp
+
+config/g5_cxm_domain_database.yml
+.env.*
+
+.idea

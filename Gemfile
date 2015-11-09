@@ -26,9 +26,7 @@ group :test do
   gem 'webmock'
 end
 
-group :development do
-  gem 'dotenv-rails'
-end
+gem 'dotenv-rails', :groups => [:development, :test]
 
 group :production do
   # Enables things like reasonably speedy logging and asset serving in Rails4
