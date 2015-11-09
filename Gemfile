@@ -1,7 +1,4 @@
-# source "https://#{ENV['FURY_AUTH']}@gem.fury.io/g5dev/" do
-#   gem 'g5_updatable', '~> 0.10.3'
-# end
-
+source "https://#{ENV['FURY_AUTH']}@gem.fury.io/g5dev/"
 source 'https://rubygems.org'
 
 gem 'rails', '4.2.0'
