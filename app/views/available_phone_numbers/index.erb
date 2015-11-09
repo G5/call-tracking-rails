@@ -12,6 +12,9 @@
       <thead>
         <tr>
           <th>Phone number</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Zip</th>
           <th></th>
         </tr>
       </thead>
@@ -19,6 +22,9 @@
       <% @phone_numbers.each do |number| %>
         <tr>
           <td><%= number.friendly_name %></td>
+          <td><%= number.rate_center %></td>
+          <td><%= number.region %></td>
+          <td><%= number.postal_code %></td>
           <td>
             <%= link_to 'Purchase', lead_sources_path(number.phone_number), method: :post, class: 'btn btn-primary btn-xs' %>
           </td>

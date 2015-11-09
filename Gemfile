@@ -1,3 +1,7 @@
+# source "https://#{ENV['FURY_AUTH']}@gem.fury.io/g5dev/" do
+#   gem 'g5_updatable', '~> 0.10.3'
+# end
+
 source 'https://rubygems.org'
 
 gem 'rails', '4.2.0'
@@ -16,6 +20,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'twilio-ruby'
 gem 'global_phone'
+gem 'g5_updatable', '~> 0.10.3'
 
 group :test do
   gem 'byebug'

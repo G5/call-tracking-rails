@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount G5Updatable::Engine => '/g5_updatable'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
