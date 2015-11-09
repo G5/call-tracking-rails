@@ -7,6 +7,12 @@ class CallTrackingController < ApplicationController
     render text: twilio_response.text
   end
 
+  def call_end
+    Rails.logger.debug params.to_s
+    # lead = Lead.create(lead_params)
+    # render text: twilio_response.text
+  end
+
   private
 
   def twilio_response
@@ -14,7 +20,7 @@ class CallTrackingController < ApplicationController
 
     Twilio::TwiML::Response.new do |r|
       r.Play "http://demo.twilio.com/hellomonkey/monkey.mp3"
-      r.Dial phone_number
+      r.Dial phone_number, action: '/call-tracking/call-end', method: 'post'
     end
   end
 
