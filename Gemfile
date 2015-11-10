@@ -18,6 +18,7 @@ gem 'turbolinks'
 gem 'twilio-ruby'
 gem 'global_phone'
 gem 'g5_updatable', '~> 0.10.3'
+gem 'g5_authenticatable'
 
 group :test do
   gem 'byebug'

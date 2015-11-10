@@ -2,7 +2,8 @@
 <html>
 <head>
 <title>Call Tracking Rails</title>
-<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+<%= stylesheet_link_tag href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', media: 'all' %>
 <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 <%= csrf_meta_tags %>
 </head>
@@ -16,5 +17,9 @@
   <% end %>
   <%= yield %>
 </div>
+<footer class="container">
+Made with <i class="fa fa-heart"></i> by your pals
+<a href="https://www.getg5.com">@G5</a>.
+</footer>
 </body>
 </html>
