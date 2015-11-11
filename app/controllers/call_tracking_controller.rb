@@ -4,7 +4,9 @@ class CallTrackingController < ApplicationController
   def forward_call
     Rails.logger.debug "--- CALL START ---"
     Rails.logger.debug params.to_s
-    Lead.create(lead_params)
+    lead = Lead.create(lead_params)
+    lead.proerties = params
+    lead.save
     render text: twilio_response.text
   end
 
