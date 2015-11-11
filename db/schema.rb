@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110215118) do
+ActiveRecord::Schema.define(version: 20151111012927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,12 +92,13 @@ ActiveRecord::Schema.define(version: 20151110215118) do
   end
 
   create_table "leads", force: :cascade do |t|
-    t.integer  "lead_source_id", null: false
-    t.string   "phone_number",   null: false
+    t.integer  "lead_source_id",              null: false
+    t.string   "phone_number",                null: false
     t.string   "city"
     t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.json     "properties",     default: {}, null: false
   end
 
   add_foreign_key "leads", "lead_sources"
