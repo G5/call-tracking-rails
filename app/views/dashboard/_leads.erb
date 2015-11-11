@@ -1,0 +1,20 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Phone number</th>
+    <th>City</th>
+    <th>State</th>
+    <th>Zip</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @leads.each do |lead| %>
+      <tr>
+        <td><%= lead.phone_number %></td>
+        <td><%= lead.city %></td>
+        <td><%= lead.state %></td>
+        <td><%= lead.caller_zip %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
