@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151111013559) do
+ActiveRecord::Schema.define(version: 20151114195809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,8 @@ ActiveRecord::Schema.define(version: 20151111013559) do
     t.string   "forwarding_number"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "client_urn"
+    t.string   "location_urn"
   end
 
   create_table "leads", force: :cascade do |t|
@@ -105,5 +107,16 @@ ActiveRecord::Schema.define(version: 20151111013559) do
     t.integer  "call_duration"
   end
 
+  create_table "leases", force: :cascade do |t|
+    t.string   "cid"
+    t.integer  "lead_source_id"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "status",         default: "active", null: false
+  end
+
+  add_index "leases", ["lead_source_id"], name: "index_leases_on_lead_source_id", using: :btree
+
   add_foreign_key "leads", "lead_sources"
+  add_foreign_key "leases", "lead_sources"
 end
