@@ -2,19 +2,7 @@
 <p>Real time call tracking and Analytics.</p>
 <div class="row">
   <div class="col-md-5">
-    <h2>Add a new number</h2>
-    <p>Create a new lead source by purchasing a new phone number. Area code is optional.</p>
-    <form class="form-inline" action="/available_phone_numbers" method="get">
-      <div class="form-group">
-        <label class="sr-only control-label" for="area-code">Area code</label>
-        <input id="area-code" name="area-code" type="text" class="form-control" maxlength="3" />
-        <label class="sr-only control-label" for="zip-code">Zip Code</label>
-        <input id="zip-code" name="zip-code" type="text" class="form-control" maxlength="5" />
-      </div>
-      <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-    <h2>Add a new number</h2>
-    <p>Create a new lead source by purchasing a new phone number. Area code is optional.</p>
+    <h2>Lead Sources</h2>
     <% if @lead_sources %>
     <table class="table table-striped">
       <thead>
