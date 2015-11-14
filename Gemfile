@@ -20,6 +20,7 @@ gem 'twilio-ruby'
 gem 'global_phone'
 gem 'g5_updatable', '~> 0.10.3'
 gem 'g5_authenticatable'
+gem "smart_listing" # https://github.com/Sology/smart_listing MIT
 
 group :test do
   gem 'byebug'

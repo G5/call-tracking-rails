@@ -1,5 +1,6 @@
 class LeadSource < ActiveRecord::Base
   has_many :leads
+  has_many :leases
 
   def self.count_leads
     joins(:leads).group(:name).order(:name).count
