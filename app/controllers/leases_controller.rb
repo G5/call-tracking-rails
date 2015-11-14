@@ -46,6 +46,7 @@ class LeasesController < ApplicationController
       phone_number = ::TwilioClient.available_phone_numbers(area_code, "").first unless phone_number
       phone_number = ::TwilioClient.available_phone_numbers("", zip_code).first unless phone_number
       raise "I01: No phone numbers available in area code or zip code." unless phone_number
+      raise "Be careful. Phone numbers are expensive!!!" unless (ENV['TWILIO_SPEND_APPROVED'] == true)
       twilio_number = TwilioClient.purchase_phone_number(phone_number.phone_number)
       ls = LeadSource.create(name: "#{client.name} | #{location.name}",
                              incoming_number: twilio_number.friendly_name,

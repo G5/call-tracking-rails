@@ -46,7 +46,7 @@ This project is built using the [Ruby on Rails](http://rubyonrails.org/) web fra
 
 4. Create database and run migrations:
 
-  _Make sure you have installed [PostgreSQL](http://www.postgresql.org/). If on a Mac, I recommend [Postgres.app](http://postgresapp.com)_
+  _Make sure you have installed [PostgreSQL](http://www.postgresql.org/)._
 
    ```
    rake db:setup
@@ -63,3 +63,8 @@ This project is built using the [Ruby on Rails](http://rubyonrails.org/) web fra
    ```
 
 7. Check it out at [http://localhost:3000](http://localhost:3000)
+
+8. Test the API
+   ```
+   curl -v --data "Cid=EE009a79-1a05-49d7-b876-2b884d0f825b&ClientUrn=g5-c-icewl2o8-nolan-real-estate-client&LocationUrn=g5-cl-53g6uec0q-twin-creek" http://localhost:3000/lease
+   ```
