@@ -9,7 +9,7 @@ class LeasesController < ApplicationController
     expired_time = DateTime.now - 10.minutes
 
     if !valid_params?
-      render status: :not_found, json: { :error => 'Invalid parameter'}
+      render status: :not_found, json: {:error => 'Invalid parameter'}
       return
     end
 
@@ -36,34 +36,33 @@ class LeasesController < ApplicationController
     end
 
     # Buy a phone number
-    G5Updatable::Client.find_by_urn(params[:ClientUrn]) do |client|
-      client.locations.find_by_urn(params[:LocationUrn]) do |location|
-        location_direct_number =  GlobalPhone.parse(location.phone_number)
-        area_code = location_direct_number.national_format[/\(.*?\)/].gsub('(', '').gsub(')','')
-        zip_code = location.postal_code.strip()
-        begin
-          phone_number = ::TwilioClient.available_phone_numbers(area_code, zip_code).first
-          phone_number = ::TwilioClient.available_phone_numbers(area_code, "").first unless phone_number
-          phone_number = ::TwilioClient.available_phone_numbers("", zip_code).first unless phone_number
-          raise "I01: No phone numbers available in area code or zip code." unless phone_number
-          twilio_number = TwilioClient.purchase_phone_number(phone_number)
-          ls = LeadSource.create(name: "#{client.name} | #{location.name}",
-                                          incoming_number: twilio_number.friendly_name,
-                                          forwarding_number: location_direct_number.national_format,
-                                          client_urn: client.urn,
-                                          location_urn: location.urn)
-          new_lease = Lease.create({cid: cid, lead_source: ls})
-          render status: :ok, json: {:phone_number => new_lease.lead_source.incoming_number}
-        rescue Exception => e
-          Rails.logger.error e.message
-          Rails.logger.error e.backtrace.inspect
-          render status: :ok, json: {:phone_number => location_direct_number.national_format}
-        end
-      end
+    client = G5Updatable::Client.find_by_urn(params[:ClientUrn])
+    location = client.locations.find_by_urn(params[:LocationUrn])
+    location_direct_number = GlobalPhone.parse(location.phone_number)
+    area_code = location_direct_number.national_format[/\(.*?\)/].gsub('(', '').gsub(')', '')
+    zip_code = location.postal_code.strip()
+    begin
+      phone_number = ::TwilioClient.available_phone_numbers(area_code, zip_code).first
+      phone_number = ::TwilioClient.available_phone_numbers(area_code, "").first unless phone_number
+      phone_number = ::TwilioClient.available_phone_numbers("", zip_code).first unless phone_number
+      raise "I01: No phone numbers available in area code or zip code." unless phone_number
+      twilio_number = TwilioClient.purchase_phone_number(phone_number.phone_number)
+      ls = LeadSource.create(name: "#{client.name} | #{location.name}",
+                             incoming_number: twilio_number.friendly_name,
+                             forwarding_number: location_direct_number.national_format,
+                             client_urn: client.urn,
+                             location_urn: location.urn)
+      new_lease = Lease.create({cid: cid, lead_source: ls})
+      render status: :ok, json: {:phone_number => new_lease.lead_source.incoming_number}
+    rescue Exception => e
+      Rails.logger.error e.message
+      Rails.logger.error e.backtrace.inspect
+      render status: :ok, json: {:phone_number => location_direct_number.national_format}
     end
+
   end
 
-private
+  private
   def valid_params?
     !G5Updatable::Location.where("urn = :urn", {urn: params[:LocationUrn]}).first.nil?
   end

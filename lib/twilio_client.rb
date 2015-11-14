@@ -8,8 +8,6 @@ class TwilioClient
   end
 
   def initialize
-    # To find TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN visit
-    # https://www.twilio.com/user/account
     account_sid = ENV['TWILIO_ACCOUNT_SID']
     auth_token  = ENV['TWILIO_AUTH_TOKEN']
     @client = Twilio::REST::Client.new account_sid, auth_token
@@ -17,7 +15,7 @@ class TwilioClient
 
   def available_phone_numbers(area_code = '415', zip_code)
     client.available_phone_numbers.
-      get('US').local.list(area_code: area_code, inPostalCode: zip_code).take(10)
+      get('US').local.list(area_code: area_code, inPostalCode: zip_code).take(1)
   end
 
   def purchase_phone_number(phone_number)
