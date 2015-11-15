@@ -10,7 +10,6 @@
           <th>Name</th>
           <th>Incoming Number</th>
           <th>Forwarding Number</th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -19,7 +18,6 @@
           <td><%= lead_source.name %></td>
           <td><%= lead_source.incoming_number %></td>
           <td><%= lead_source.forwarding_number %></td>
-          <td><%= link_to 'Edit', edit_lead_source_path(lead_source), class: 'btn btn-default btn-xs' %></td>
         </tr>
         <% end %>
       </tbody>
@@ -32,18 +30,16 @@
     <div class="row">
       <div class="col-md-6">
         <h3>Calls by lead source</h3>
-        <p>The number of incoming calls each lead source has received.</p>
         <canvas id="leads-by-source"></canvas>
       </div>
       <div class="col-md-6">
         <h3>Calls by city</h3>
-        <p>The number of calls from different cities, based on Twilio call data</p>
         <canvas id="leads-by-city"></canvas>
       </div>
     </div>
   </div>
   <div class="col-md-7">
-    <h2>Leads</h2>
+    <h2>Calls</h2>
     <%= render "leads" %>
   </div>
 </div>
