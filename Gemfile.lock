@@ -171,6 +171,7 @@ GEM
       omniauth (~> 1.2)
     orm_adapter (0.5.0)
     pg (0.18.1)
+    puma (2.15.3)
     pundit (1.0.1)
       activesupport (>= 3.0.0)
     rack (1.6.4)
@@ -286,6 +287,7 @@ DEPENDENCIES
   global_phone
   jquery-rails
   pg
+  puma
   rails (= 4.2.0)
   rails_12factor
   rspec-rails
