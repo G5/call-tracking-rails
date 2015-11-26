@@ -2,10 +2,10 @@ class LeasesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    Rails.logger.debug params.to_s
-    cid = params[:Cid]
-    client_urn = params[:ClientUrn]
-    location_urn = params[:LocationUrn]
+    # Rails.logger.debug params.to_s
+    # cid = params[:Cid]
+    # client_urn = params[:ClientUrn]
+    # location_urn = params[:LocationUrn]
     expired_time = DateTime.now - 10.minutes
 
     if !valid_params?
@@ -14,7 +14,7 @@ class LeasesController < ApplicationController
     end
 
     phone_number = find_existing_lease
-    phone_number ||= reclaim_lease
+    phone_number ||= reclaim_lease(expired_time)
     phone_number ||= purchase_number
     render status: :ok, json: {:phone_number => phone_number}
   end
@@ -34,7 +34,7 @@ class LeasesController < ApplicationController
     end
   end
 
-  def reclaim_lease
+  def reclaim_lease(expired_time)
     l = Lease.where("status = :status", {status: "active"}).where("leases.updated_at <= :expired_time", {expired_time: expired_time}).joins(:lead_source).where(
         "client_urn = :client_urn AND location_urn = :location_urn",
         {client_urn: client_urn, location_urn: location_urn}).order("leases.updated_at ASC").first
@@ -54,8 +54,8 @@ class LeasesController < ApplicationController
     zip_code = location.postal_code.strip()
     begin
       phone_number = ::TwilioClient.available_phone_numbers(area_code, zip_code).first
-      phone_number = ::TwilioClient.available_phone_numbers(area_code, "").first unless phone_number
-      phone_number = ::TwilioClient.available_phone_numbers("", zip_code).first unless phone_number
+      phone_number ||= ::TwilioClient.available_phone_numbers(area_code, "").first
+      phone_number ||= ::TwilioClient.available_phone_numbers("", zip_code).first
       raise "I01: No phone numbers available in area code or zip code." unless phone_number
       raise "Be careful. Phone numbers are expensive!!!" unless (ENV['TWILIO_SPEND_APPROVED'] == true)
       twilio_number = TwilioClient.purchase_phone_number(phone_number.phone_number)
@@ -72,6 +72,5 @@ class LeasesController < ApplicationController
       location_direct_number.national_format
     end
   end
-
 end
 
