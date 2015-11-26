@@ -13,17 +13,28 @@ class LeasesController < ApplicationController
       return
     end
 
-    # Refactor as Lookup Existing Lease
+    phone_number = find_existing_lease
+    phone_number ||= reclaim_lease
+    phone_number ||= purchase_number
+    render status: :ok, json: {:phone_number => phone_number}
+  end
+
+  private
+  def valid_params?
+    !G5Updatable::Location.where("urn = :urn", {urn: params[:LocationUrn]}).first.nil?
+  end
+
+  def find_existing_lease
     l = Lease.where("status = :status", {status: "active"}).where("cid = :cid", {cid: params[:Cid]}).joins(:lead_source).where(
         "client_urn = :client_urn AND location_urn = :location_urn",
         {client_urn: params[:ClientUrn], location_urn: params[:LocationUrn]}).first
     unless l.nil?
       l.touch
-      render status: :ok, json: {:phone_number => l.lead_source.incoming_number}
-      return
+      l.lead_source.incoming_number
     end
+  end
 
-    # Is there any lease that I can reclaim?
+  def reclaim_lease
     l = Lease.where("status = :status", {status: "active"}).where("leases.updated_at <= :expired_time", {expired_time: expired_time}).joins(:lead_source).where(
         "client_urn = :client_urn AND location_urn = :location_urn",
         {client_urn: client_urn, location_urn: location_urn}).order("leases.updated_at ASC").first
@@ -31,11 +42,11 @@ class LeasesController < ApplicationController
       l.status = "expired"
       l.save
       new_lease = Lease.create({cid: cid, lead_source: l.lead_source})
-      render status: :ok, json: {:phone_number => new_lease.lead_source.incoming_number}
-      return
+      new_lease.lead_source.incoming_number
     end
+  end
 
-    # Buy a phone number
+  def purchase_number
     client = G5Updatable::Client.find_by_urn(params[:ClientUrn])
     location = client.locations.find_by_urn(params[:LocationUrn])
     location_direct_number = GlobalPhone.parse(location.phone_number)
@@ -54,18 +65,12 @@ class LeasesController < ApplicationController
                              client_urn: client.urn,
                              location_urn: location.urn)
       new_lease = Lease.create({cid: cid, lead_source: ls})
-      render status: :ok, json: {:phone_number => new_lease.lead_source.incoming_number}
+      new_lease.lead_source.incoming_number
     rescue Exception => e
       Rails.logger.error e.message
       Rails.logger.error e.backtrace.inspect
-      render status: :ok, json: {:phone_number => location_direct_number.national_format}
+      location_direct_number.national_format
     end
-
-  end
-
-  private
-  def valid_params?
-    !G5Updatable::Location.where("urn = :urn", {urn: params[:LocationUrn]}).first.nil?
   end
 
 end

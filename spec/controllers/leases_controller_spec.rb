@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe LeadSourcesController do
+describe LeasesController do
   describe "#edit" do
     it 'assings a lead source' do
       params = {id: "1"}

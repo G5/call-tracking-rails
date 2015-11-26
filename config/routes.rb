@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount G5Authenticatable::Engine => '/g5_auth'
+#  mount G5Authenticatable::Engine => '/g5_auth'
   mount G5Updatable::Engine => '/g5_updatable'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -22,7 +22,6 @@ Rails.application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
   resources :lead_sources, only: [:create, :edit, :update]
-  resources :available_phone_numbers, only: [:index]
 
   # Example resource route with options:
   #   resources :products do

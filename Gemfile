@@ -19,7 +19,7 @@ gem 'turbolinks'
 gem 'twilio-ruby'
 gem 'global_phone'
 gem 'g5_updatable', '~> 0.10.3'
-gem 'g5_authenticatable'
+# gem 'g5_authenticatable'
 gem "smart_listing" # https://github.com/Sology/smart_listing MIT
 gem 'puma' # https://github.com/puma/puma BSD 3-Clause license
 

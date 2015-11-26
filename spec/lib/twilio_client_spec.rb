@@ -7,7 +7,7 @@ describe TwilioClient do
   describe '.available_phone_numbers' do
     it "returns the first 10 phone numbers" do
       VCR.use_cassette('available-phone-numbers') do
-        phone_numbers = described_class.available_phone_numbers('415')
+        phone_numbers = described_class.available_phone_numbers('415', '')
         expect(phone_numbers.count).to eq(10)
       end
     end

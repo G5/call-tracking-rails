@@ -16,7 +16,7 @@ describe CallTrackingController do
 
     it "renders a TwiML text response" do
       post :forward_call, "Called" => '+12568417275', "Caller" => '+12568417333', "FromCity" => 'San Diego', "FromState" => 'CA'
-      expect(response.body).to eq("<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response><Dial>+593 99 267 0240</Dial></Response>")
+      expect(response.body).to eq("<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response><Play>http://demo.twilio.com/hellomonkey/monkey.mp3</Play><Dial action=\"/call-tracking/call-end\" method=\"post\">+593 99 267 0240</Dial></Response>")
     end
   end
 end
