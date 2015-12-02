@@ -9,6 +9,10 @@ $(document).ready(function() {
   $.get('/statistics/leads_by_city/', function(data) {
     CallTrackingGraph("#leads-by-city", data.statistics).draw();
   });
+
+    $( "#btn-test-me" ).click(function() {
+        alert( "Handler for .click() called." );
+    });
 });
 
 CallTrackingGraph = function(selector, data) {

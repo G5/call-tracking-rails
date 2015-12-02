@@ -1,5 +1,10 @@
 class LeasesController < ApplicationController
   skip_before_action :verify_authenticity_token
+  after_filter  :set_access_control_headers
+
+  def set_access_control_headers
+    headers['Access-Control-Allow-Origin'] = '*'
+  end
 
   def create
     # Rails.logger.debug params.to_s
