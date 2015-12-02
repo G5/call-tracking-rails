@@ -1,4 +1,4 @@
-class ApplicationPolicy < G5Authenticatable::BasePolicy
-  class Scope < BaseScope
-  end
-end
+# class ApplicationPolicy < G5Authenticatable::BasePolicy
+#   class Scope < BaseScope
+#   end
+# end
