@@ -30,9 +30,7 @@ class LeasesController < ApplicationController
   end
 
   def find_existing_lease
-    l = Lease.where("status = :status", {status: "active"}).where("cid = :cid", {cid: params[:Cid]}).joins(:lead_source).where(
-        "client_urn = :client_urn AND location_urn = :location_urn",
-        {client_urn: params[:ClientUrn], location_urn: params[:LocationUrn]}).first
+    l = Lease.where(cid: params[:Cid]).active.by_location(params[:ClientUrn], params[:LocationUrn])
     unless l.nil?
       l.touch
       l.lead_source.incoming_number
@@ -40,12 +38,14 @@ class LeasesController < ApplicationController
   end
 
   def reclaim_lease(expired_time)
-    l = Lease.where("status = :status", {status: "active"}).where("leases.updated_at <= :expired_time", {expired_time: expired_time}).joins(:lead_source).where(
-        "client_urn = :client_urn AND location_urn = :location_urn",
-        {client_urn: client_urn, location_urn: location_urn}).order("leases.updated_at ASC").first
+    l = Lease.
+      where(cid: params[:Cid]).
+      active.
+      by_location(params[:ClientUrn], params[:LocationUrn]).
+      expirable(expired_time)
+
     unless l.nil?
-      l.status = "expired"
-      l.save
+      l.expire
       new_lease = Lease.create({cid: cid, lead_source: l.lead_source})
       new_lease.lead_source.incoming_number
     end

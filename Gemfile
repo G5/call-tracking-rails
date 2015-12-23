@@ -30,6 +30,7 @@ group :test do
   gem 'database_cleaner'
   gem 'vcr'
   gem 'webmock'
+  gem 'pry'
 end
 
 gem 'dotenv-rails', :groups => [:development, :test]

@@ -1,18 +1,32 @@
 class CallTrackingController < ApplicationController
+  include ParamsCleaner
   skip_before_action :verify_authenticity_token
 
   def forward_call
     Rails.logger.debug "--- CALL START ---"
     Rails.logger.debug params.to_s
-    lead = Lead.create(lead_params)
-    lead.properties = params
-    lead.save
+    #lead = Lead.create(lead_params)
+    #lead.properties = params
+    #lead.save
     render text: twilio_response.text
   end
 
   def call_end
     Rails.logger.debug "--- CALL END ---"
     Rails.logger.debug params.to_s
+
+    lead = Lead.create(lead_params)
+    lead.properties = clean_rails_parameters(params)
+    lead.save
+
+    lease = Lease.active.where(lead_source_id: lead.lead_source_id).first
+    loc = G5Updatable::Loction.where(urn: lead.lead_source.location_urn)
+
+    post_params = lead.properties
+    post_params["ga_client_id"] = lease.cid
+    post_params["location_uid"] = loc.uid
+    Net::HTTP.post_form(URI.parse('http://g5-cls-1skmeepf-clowns-monkeys.herokuapp.com/twilio_calls'), lead.properties)
+
     render status: :ok, json: @controller.to_json
   end
 
