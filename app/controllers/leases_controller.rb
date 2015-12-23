@@ -30,7 +30,7 @@ class LeasesController < ApplicationController
   end
 
   def find_existing_lease
-    l = Lease.where(cid: params[:Cid]).active.by_location(params[:ClientUrn], params[:LocationUrn])
+    l = Lease.where(cid: params[:Cid]).active.by_location(params[:ClientUrn], params[:LocationUrn]).first
     unless l.nil?
       l.touch
       l.lead_source.incoming_number
