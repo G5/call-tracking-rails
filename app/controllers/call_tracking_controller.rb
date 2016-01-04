@@ -20,7 +20,7 @@ class CallTrackingController < ApplicationController
     lead.save
 
     lease = Lease.active.where(lead_source_id: lead.lead_source_id).first
-    loc = G5Updatable::Location.where(urn: lead.lead_source.location_urn)
+    loc = G5Updatable::Location.where(urn: lead.lead_source.location_urn).first
 
     post_params = lead.properties
     post_params["ga_client_id"] = lease.cid
