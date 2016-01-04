@@ -42,7 +42,8 @@ class LeasesController < ApplicationController
       where(cid: params[:Cid]).
       active.
       by_location(params[:ClientUrn], params[:LocationUrn]).
-      expirable(expired_time)
+      expirable(expired_time).
+      first
 
     unless l.nil?
       l.expire
