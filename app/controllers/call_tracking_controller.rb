@@ -25,7 +25,7 @@ class CallTrackingController < ApplicationController
     post_params = lead.properties
     post_params["ga_client_id"] = lease.cid
     post_params["location_uid"] = loc.uid
-    Net::HTTP.post_form(URI.parse('http://g5-cls-1skmeepf-clowns-monkeys.herokuapp.com/twilio_calls'), lead.properties)
+    Net::HTTP.post_form(URI.parse('https://g5-call-analytics.herokuapp.com/never-gonna-give-you-up-short.mp3'), lead.properties)
 
     render status: :ok, json: @controller.to_json
   end
