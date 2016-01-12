@@ -35,7 +35,7 @@ class CallTrackingController < ApplicationController
   def twilio_response
     phone_number = lead_source.forwarding_number
     Twilio::TwiML::Response.new do |r|
-      r.Play "http://demo.twilio.com/hellomonkey/monkey.mp3"
+      r.Play "https://g5-call-analytics.herokuapp.com/never-gonna-give-you-up-short.mp3"
       r.Dial phone_number, action: '/call-tracking/call-end', method: 'post'
     end
   end
