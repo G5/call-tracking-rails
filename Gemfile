@@ -22,6 +22,7 @@ gem 'g5_updatable', '~> 0.10.3'
 # gem 'g5_authenticatable'
 gem "smart_listing" # https://github.com/Sology/smart_listing MIT
 gem 'puma' # https://github.com/puma/puma BSD 3-Clause license
+gem 'g5_heroku_app_name_formatter'
 
 group :test do
   gem 'byebug'
@@ -30,10 +31,10 @@ group :test do
   gem 'database_cleaner'
   gem 'vcr'
   gem 'webmock'
-  gem 'pry'
 end
 
 gem 'dotenv-rails', :groups => [:development, :test]
+gem 'pry', :groups => [:development, :test]
 
 group :production do
   # Enables things like reasonably speedy logging and asset serving in Rails4

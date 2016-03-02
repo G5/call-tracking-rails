@@ -20,12 +20,15 @@ class CallTrackingController < ApplicationController
     lead.save
 
     lease = Lease.active.where(lead_source_id: lead.lead_source_id).first
-    loc = G5Updatable::Location.where(urn: lead.lead_source.location_urn).first
+    location = G5Updatable::Location.where(urn: lead.lead_source.location_urn).first
+    client = location.client
 
     post_params = lead.properties
     post_params["ga_client_id"] = lease.cid
-    post_params["location_uid"] = loc.uid
-    Net::HTTP.post_form(URI.parse('http://g5-cls-1skmeepf-clowns-monkeys.herokuapp.com/twilio_calls'), lead.properties)
+    post_params["location_uid"] = location.uid
+    formatter = G5HerokuAppNameFormatter::Formatter.new(client.urn, ["cls"])
+
+    Net::HTTP.post_form(URI.parse("#{formatter.cls_url}/twilio_calls"), lead.properties)
 
     render status: :ok, json: @controller.to_json
   end

@@ -94,6 +94,7 @@ GEM
       activesupport
       g5_authentication_client (>= 0.2)
       httparty
+    g5_heroku_app_name_formatter (0.3.3)
     g5_updatable (0.10.3)
       active_model_serializers (~> 0.8)
       activesupport
@@ -250,6 +251,7 @@ DEPENDENCIES
   database_cleaner
   dotenv-rails
   factory_girl_rails (~> 4.0)
+  g5_heroku_app_name_formatter
   g5_updatable (~> 0.10.3)
   global_phone
   jquery-rails
