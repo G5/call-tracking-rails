@@ -33,13 +33,12 @@ RSpec.describe Lease do
     end
 
     describe "by_location" do
-      let(:client_urn) { "client_urn" }
       let(:location_urn) { "location_urn" }
-      let(:source) { FactoryGirl.create(:lead_source, client_urn: client_urn, location_urn: location_urn) }
+      let(:source) { FactoryGirl.create(:lead_source, location_urn: location_urn) }
 
       let!(:lease) { FactoryGirl.create(:lease, lead_source: source) }
       let!(:other) { FactoryGirl.create(:lease) }
-      subject(:by_loc) { Lease.by_location(client_urn, location_urn) }
+      subject(:by_loc) { Lease.by_location(location_urn) }
 
       it "returns the leases" do
         expect(by_loc.count).to eq(1)

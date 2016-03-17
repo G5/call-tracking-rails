@@ -1,50 +1,30 @@
 require 'rails_helper'
 
 describe LeasesController do
-  describe "#edit" do
-    it 'assings a lead source' do
-      params = {id: "1"}
-      lead_source = double("Lead Source")
-      allow(LeadSource).to receive(:find).with(params[:id]) { lead_source }
-
-      get :edit, id: params[:id]
-      expect(assigns(:lead_source)).to eq lead_source
-    end
-  end
-
   describe "#create" do
-    let(:twilio_number) do
-      double('Twilio Number',
-             friendly_name: '(256) 841-7275')
+    context "with invalid params" do
+      let(:lease_post) { post :create, { urn: "does not exists" } }
+
+      it "returns and error code" do
+        expect(lease_post.status).to eq(400)
+        expect(lease_post.body).to include("Invalid parameter")
+      end
     end
 
-    before do
-      allow(TwilioClient).to receive(:purchase_phone_number) { twilio_number }
-    end
+    context "with a valid requst" do
+      let(:client) { FactoryGirl.create(:client) }
+      let!(:location) { FactoryGirl.create(:location, client: client) }
+      let(:lead_source) { FactoryGirl.create(:lead_source, incoming_number: "+15555555555", location_urn: location.urn) }
+      let!(:lease) { FactoryGirl.create(:lease, lead_source: lead_source, updated_at: 30.minutes.ago) }
+      let(:lease_post) { post :create, { LocationUrn: location.urn} }
 
-    it "creates a lead source" do
-      expect do
-        post :create, format: '+12568417275'
-      end.to change(LeadSource, :count).by(1)
-    end
+      before do
+        allow_any_instance_of(LeaseFinder).to receive(:purchase_number).and_return(nil)
+      end
 
-    it "redirects to lead source edit url" do
-      post :create, format: '+12568417275'
-      expect(response).to redirect_to edit_lead_source_path(LeadSource.last)
-    end
-  end
-
-  describe "#update" do
-    let(:lead_source) { create(:lead_source, name: "Downtown") }
-
-    it 'updates the lead source' do
-      put :update, id: lead_source.id, lead_source: {name: "Smalltown"}
-      expect(lead_source.reload.name).to eq("Smalltown")
-    end
-
-    it 'redirects to root' do
-      put :update, id: lead_source.id, lead_source: {name: "Smalltown"}
-      expect(response).to redirect_to root_url
+      it "returns a phone number" do
+        expect(JSON.parse(lease_post.body)["phone_number"]).to eq("+15555555555")
+      end
     end
   end
 end

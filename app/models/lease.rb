@@ -3,7 +3,10 @@ class Lease < ActiveRecord::Base
 
   scope :active, -> { where(status: 'active') }
   scope :expirable, -> (time) { where("leases.updated_at <= ?", time) }
-  scope :by_location, -> (client_urn, location_urn) { joins(:lead_source).where("client_urn = '#{client_urn}' and location_urn = '#{location_urn}'") }
+
+  scope :by_location, -> (location_urn) {
+    joins(:lead_source).where(lead_sources: {location_urn: location_urn})
+  }
 
   def expire
     update_attributes!(status: "expired")

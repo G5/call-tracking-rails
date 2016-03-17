@@ -3,7 +3,7 @@ http_interactions:
 - request:
     method: get
     uri: https://<TWILIO ACCOUNT SID>:<TWILIO AUTH TOKEN>@api.twilio.com/2010-04-01/Accounts/<TWILIO
-      ACCOUNT SID>/AvailablePhoneNumbers/US/Local.json?AreaCode=415
+      ACCOUNT SID>/AvailablePhoneNumbers/US/Local.json?AreaCode=415&InPostalCode=
     body:
       encoding: US-ASCII
       string: ''
