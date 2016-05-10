@@ -1,6 +1,6 @@
 source "https://#{ENV['FURY_AUTH']}@gem.fury.io/g5dev/"
 source 'https://rubygems.org'
-ruby '2.2.3'
+ruby '2.3.0'
 
 gem 'rails', '4.2.0'
 gem 'pg'
