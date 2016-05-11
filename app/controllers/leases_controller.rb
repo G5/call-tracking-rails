@@ -7,11 +7,6 @@ class LeasesController < ApplicationController
   end
 
   def create
-    # Rails.logger.debug params.to_s
-    # cid = params[:Cid]
-    # client_urn = params[:ClientUrn]
-    # location_urn = params[:LocationUrn]
-
     if !valid_params?
       render status: :bad_request, json: {:error => 'Invalid parameter'}
       return
@@ -24,7 +19,7 @@ class LeasesController < ApplicationController
 
   private
   def valid_params?
-    !G5Updatable::Location.where("urn = :urn", {urn: params[:LocationUrn]}).first.nil?
+    !G5Updatable::Location.where("urn = :urn", { urn: params[:location_urn] }).first.nil?
   end
 end
 

@@ -1,7 +1,7 @@
 class LeaseFinder
   def initialize(params)
-    @cid = params[:Cid]
-    @location = G5Updatable::Location.where(urn: params[:LocationUrn]).first
+    @cid = params[:ga_client_id]
+    @location = G5Updatable::Location.where(urn: params[:location_urn]).first
   end
 
   def find_lease

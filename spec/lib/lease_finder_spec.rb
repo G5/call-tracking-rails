@@ -5,7 +5,7 @@ RSpec.describe LeaseFinder do
   let(:location) { FactoryGirl.create(:location, client: client) }
   let(:lead_source) { FactoryGirl.create(:lead_source, location_urn: location.urn) }
   let(:cid) { '123456-cid' }
-  let(:finder) { LeaseFinder.new({Cid: cid, LocationUrn: location.urn}) }
+  let(:finder) { LeaseFinder.new({ga_client_id: cid, location_urn: location.urn}) }
   let(:max_pool) { 7 }
 
   describe '.find_lease' do
